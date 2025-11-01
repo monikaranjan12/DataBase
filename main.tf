@@ -1,0 +1,18 @@
+provider "aws" {
+region = var.aws_region
+}
+ 
+data "aws_vpc" "selected" {
+id = var.vpc_id
+}
+ 
+resource "aws_subnet" "example" {
+vpc_id = data.aws_vpc.selected.id
+availability_zone = "ap-south-1a"
+cidr_block = cidrsubnet(data.aws_vpc.selected.cidr_block, 4, 1)
+ 
+tags = {
+Name = "Example Subnet"
+}
+}
+ 
